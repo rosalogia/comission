@@ -93,7 +93,8 @@ def create():
         return redirect(url_for("index"))
     return render_template("create.html", title="Create", form=form)
     
-@app.route("/artistpage")
+# @app.route("/artistpage")
+@app.route("/profile")
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     posts = [
