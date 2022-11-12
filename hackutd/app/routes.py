@@ -9,6 +9,7 @@ import datetime
 
 
 @app.route("/")
+
 @app.route("/index")
 def index():
     print("hi")
@@ -91,3 +92,12 @@ def create():
 
         return redirect(url_for("index"))
     return render_template("create.html", title="Create", form=form)
+    
+@app.route("/artistpage")
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = [
+        {'author': user, 'body': 'Test post #1'},
+        {'author': user, 'body': 'Test post #2'}
+    ]
+    return render_template('artistpage.html', user=user, posts=posts)
