@@ -17,7 +17,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         return redirect(url_for('index'))
-    return render_template("login.html", title="Login")
+    return render_template("login.html", title="Login", form=form)
 
 @app.route("/logout")
 def logout():
