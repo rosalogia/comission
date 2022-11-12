@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{{ title }}</title>
-    </head>
-    <body>
-        {% block content %}{% endblock %}
-    </body>
-</html>
+{% extends 'bootstrap/base.html'%}
+{% block title %}    
+    {% if title %}{{ title }} - HackUTD22{% else %}Welcome to HackUTD{% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}
