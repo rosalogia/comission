@@ -10,6 +10,8 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
    username = StringField('Username', validators=[DataRequired()])
+   name = StringField("Display Name", validators=[DataRequired()])
+   is_artist = BooleanField("I'm an artist")
    password = PasswordField('Password', validators=[DataRequired()])
    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
    submit = SubmitField('Register')
