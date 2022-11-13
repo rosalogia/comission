@@ -12,6 +12,7 @@ class User(UserMixin, db.Model):
     password_hash = Column(String, nullable=False)
     is_artist = Column(Boolean)
     likes = relationship("Likes", back_populates="user")
+    posts = relationship("Post", back_populates="artist")
     def __repr__(self):
         return f"<User {self.username}>"
     def set_password(self, password):
@@ -28,6 +29,7 @@ class Post(db.Model):
     image_path = Column(String, nullable=False)
     caption = Column(String)
     artist_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    artist = relationship("User", back_populates="posts")
     posted_at = Column(DateTime, nullable=False)
     price = Column(Float)
     tags = relationship("Tag", back_populates="post")
