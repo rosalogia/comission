@@ -30,8 +30,6 @@ def explore():
             post_cols[i % 3].append(posts[i])
         print(post_cols)
         return render_template("explore.html", title="Explore", posts=post_cols, form=form)
-    else:
-        flash("Error")
     return render_template("explore.html", title="Explore", posts=[], form=form)
 
 

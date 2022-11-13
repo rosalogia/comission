@@ -7,22 +7,13 @@
 <link rel="stylesheet" href="/static/css/image_grid.css">
 {% endblock %}
 
-{% block content %}
+{% block app_content %}
     <h1>Explore</h1>
     <div class="row">
         <div class="col-md-4">
             {{ wtf.quick_form(form) }}
         </div>
     </div>
-    {% with messages = get_flashed_messages()%}
-    {% if messages %}
-        <h1 style="color: red">{{messages[0]}}</h1>
-    {%else%}
-        {{macros.grid(posts)}}
-    
-    {% endif %}
-    {%endwith%}
-
 {% endblock %}
 
 
