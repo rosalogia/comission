@@ -52,6 +52,7 @@ def login():
     return render_template("login.html", title="Login", form=form)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
 def edit_profile():
     form = EditProfileForm()
     if form.validate_on_submit():
