@@ -14,6 +14,12 @@
             {{ wtf.quick_form(form) }}
         </div>
     </div>
+    {% with messages = get_flashed_messages()%}
+    {% if messages %}
+    {%else%}
+        {{macros.grid(posts)}}
+    {% endif %}
+    {% endwith %}
 {% endblock %}
 
 

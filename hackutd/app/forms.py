@@ -7,7 +7,8 @@ from wtforms import (
     SubmitField,
     FileField,
     TextAreaField,
-    FloatField,
+    DecimalField,
+    DecimalRangeField
 )
 from wtforms.validators import (
     ValidationError,
@@ -16,7 +17,7 @@ from wtforms.validators import (
     NumberRange,
     Email,
     Regexp,
-    Length
+    Length,
 )
 from app.models import User
 
@@ -30,28 +31,33 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
     name = StringField("Display Name", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    is_artist = BooleanField("I'm an artist")
     password = PasswordField("Password", validators=[DataRequired()])
     password2 = PasswordField(
         "Repeat Password", validators=[DataRequired(), EqualTo("password")]
     )
     is_artist = BooleanField("I'm an artist")
     submit = SubmitField("Register")
+
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('Please use a different username')
+            raise ValidationError("Please use a different username")
+
 
 class EditProfileForm(FlaskForm):
-   username = StringField('Username', validators=[])
-   bio = TextAreaField('About me', validators=[Length(min=0, max=140)])
-   name = StringField('Display Name', validators=[])
-   submit = SubmitField('Submit')
-   def validate_username(self, username):
+    username = StringField("Username", validators=[DataRequired()])
+    bio = TextAreaField("About me", validators=[Length(min=0, max=140)])
+    name = StringField("Display Name", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+    def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('Please use a different username')
+            raise ValidationError("Please use a different username")
+
 
 class PostForm(FlaskForm):
     image = FileField("Upload Image", validators=[DataRequired()])
@@ -64,11 +70,11 @@ class PostForm(FlaskForm):
 
     caption = TextAreaField("A Descriptive Caption", validators=[DataRequired()])
     tags = StringField("A comma separated list of tags describing your work")
-    price = FloatField("Price", validators=[NumberRange(min=0)])
+    price = DecimalField("Price", validators=[NumberRange(min=0)])
     submit = SubmitField("Create")
 
 class SearchForm(FlaskForm):
-   search_tag = StringField("Search Tag")
-   search_artist = StringField("Search Artist")
-   search_price = FloatField("Price Range",validators=[NumberRange(min=0)])
-   submit = SubmitField('Search')
+    search_tag = StringField("Search Tag")
+    search_artist = StringField("Search Artist")
+    search_price = DecimalField("Max Price", default=50, validators=[NumberRange(min=0)])
+    submit = SubmitField("Search")

@@ -16,7 +16,7 @@
 
 {% macro single(post, tags) -%}
 <div class="post">
-    <h5>{{ post.artist.username }}</h5>
+    <a href="/profile/{{post.artist.username}}"><h5>{{ post.artist.username }}</h5></a>
     <a href="/listing/{{post.id}}"><img src="{{ post.image_path }}"></a>
     <p>Tags: {{ tags }}</p>
     <p>{{ post.caption }}</p>

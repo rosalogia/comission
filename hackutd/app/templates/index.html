@@ -1,5 +1,16 @@
 {% extends "base.html" %}
+{% import "macros.html" as macros %}
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/single.css">
+{% endblock %}
 
 {% block app_content %}
 <h1>Feed</h1>
+
+{% if not current_user.is_anonymous %}
+    {% for (post, tags) in posts %}
+        {{macros.single(post, tags)}}
+    {% endfor %}
+{% endif %}
 {% endblock %}
