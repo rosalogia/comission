@@ -1,5 +1,6 @@
 from app import db, login
 from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, DateTime, Float
+from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -10,6 +11,7 @@ class User(UserMixin, db.Model):
     bio = Column(String)
     password_hash = Column(String, nullable=False)
     is_artist = Column(Boolean)
+    likes = relationship("Likes", back_populates="user")
     def __repr__(self):
         return f"<User {self.username}>"
     def set_password(self, password):
@@ -28,13 +30,15 @@ class Post(db.Model):
     artist_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     posted_at = Column(DateTime, nullable=False)
     price = Column(Float)
+    tags = relationship("Tag", back_populates="post")
     def __repr__(self):
         return f"<Post {self.id}>"
 
 class Tag(db.Model):
     id = Column(Integer, primary_key=True)
     post_id = Column(Integer, ForeignKey('post.id'), nullable=False)
-    tag = Column(String, nullable=False )
+    tag = Column(String, nullable=False)
+    post = relationship("Post", back_populates="tags")
     def __repr__(self):
         return f"<Tag {self.id}>"
 
@@ -50,6 +54,7 @@ class Likes(db.Model):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     post_id = Column(Integer, ForeignKey('post.id'), nullable=False)
+    user = relationship("User", back_populates="likes")
 
     def __repr__(self):
         return f"<Like {self.id}"
