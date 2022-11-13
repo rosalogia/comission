@@ -8,7 +8,7 @@ from wtforms import (
     FileField,
     TextAreaField,
     DecimalField,
-    DecimalRangeField
+    DecimalRangeField,
 )
 from wtforms.validators import (
     ValidationError,
@@ -73,8 +73,11 @@ class PostForm(FlaskForm):
     price = DecimalField("Price", validators=[NumberRange(min=0)])
     submit = SubmitField("Create")
 
+
 class SearchForm(FlaskForm):
     search_tag = StringField("Search Tag")
     search_artist = StringField("Search Artist")
-    search_price = DecimalField("Max Price", default=50, validators=[NumberRange(min=0)])
+    search_price = DecimalField(
+        "Max Price", default=50, validators=[NumberRange(min=0)]
+    )
     submit = SubmitField("Search")
