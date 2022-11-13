@@ -4,7 +4,7 @@
         <div class="column">
         {% for post in column %}
         <div class="work">
-            <a href="/"><img class="hvr-float" src="{{ post.image_path }}"></a>
+            <a href="/listing/{{post.id}}"><img class="hvr-float" src="{{ post.image_path }}"></a>
             <p class="price"><b>{{ "$%.2f"|format(post.price) }}</b></p>
         </div>
         {% endfor %}
@@ -17,7 +17,7 @@
 {% macro single(post, tags) -%}
 <div class="post">
     <h5>{{ post.artist.username }}</h5>
-    <img src="{{ post.image_path }}">
+    <a href="/listing/{{post.id}}"><img src="{{ post.image_path }}"></a>
     <p>Tags: {{ tags }}</p>
     <p>{{ post.caption }}</p>
 </div>
