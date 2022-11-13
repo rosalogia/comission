@@ -49,7 +49,11 @@ def logout():
 def profile(username):
     user = User.query.filter_by(username=username).first_or_404()
     posts = user.posts
-    return render_template("profile.html", user=user, posts=posts, title="Profile")
+    columns = [[], [], []]
+    for i in range(len(posts)):
+        columns[i % 3].append(posts[i])
+
+    return render_template("profile.html", user=user, posts=columns, title="Profile")
 
 
 @app.route("/register", methods=["GET", "POST"])

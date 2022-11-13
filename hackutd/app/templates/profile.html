@@ -1,11 +1,13 @@
 {% extends "base.html" %}
+{% import 'macros.html' as macros %}
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/image_grid.css">
+{% endblock %}
 
 {% block app_content %}
    <h1>User: {{ user.username }}</h1>
    {% if user.bio %}<h5>About Me: {{ user.bio }}</h5>{% endif %}
    <hr>
-   {% for post in posts %}
-      <img src="{{ post.image_path }}">
-      <img src="/static/img/yea.png">
-   {% endfor %}
+   {{ macros.grid(posts) }}
 {% endblock %}
