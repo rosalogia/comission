@@ -66,7 +66,7 @@ def create():
         img = form.image.data
         path = os.path.join(app.instance_path, 'posts', img.filename)
         img.save(path)
-        tags = [s.strip() for s in form.tags.data.split(",")]
+        tags = [Tag(tag=s.strip()) for s in form.tags.data.split(",")]
         new_post = Post(image_path=path, caption=form.caption.data, posted_at=datetime.datetime.now(), price=form.price.data)
         new_post.tags += tags
         current_user.posts.append(new_post)
