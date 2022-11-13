@@ -1,24 +1,56 @@
 {% macro grid(posts) -%}
-<div class="row">
-    {% for column in posts %}
-        <div class="column">
-        {% for post in column %}
-        <div class="work">
-            <a href="/listing/{{post.id}}"><img class="hvr-float" src="{{ post.image_path }}"></a>
-            <p class="price"><b>{{ "$%.2f"|format(post.price) }}</b></p>
-        </div>
-        {% endfor %}
-        </div>
-    {% endfor %}
+<div class="img_row">
+  {% for column in posts %}
+  <div class="img_column">
+    {% for post in column %}
+    <div class="work">
+      <a href="/listing/{{post.id}}"><img class="hvr-float" src="{{ post.image_path }}"></a>
+      <p class="price"><b>{{ "$%.2f"|format(post.price) }}</b></p>
     </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
 </div>
 {%- endmacro %}
 
 {% macro single(post, tags) -%}
-<div class="post">
+
+
+<div class="post col s6 offset-s3 card">
+  <div class="card-image waves-effect waves-block waves-light">
+    <img class="activator" src="{{post.image_path}}">
+  </div>
+  <div class="card-content">
+    <span class="card-title activator grey-text text-darken-4">{{post.caption}} | {{"$%.2f"|format(post.price)}} <i
+        class="material-icons right">more_vert</i></span>
+    <p><a href="/profile/{{post.artist.username}}">{{post.artist.name}}</a></p>
+  </div>
+  <div class="card-reveal">
+    <span class="card-title grey-text text-darken-4">{{post.caption}}<i class="material-icons right">close</i></span>
+    <p class="post-tagline">Purchase {{post.artist.name}}'s <a href="/listing/{{post.id}}"><i>{{post.caption}}</i></a>
+      for <b>{{ "$%.2f"|format(post.price) }}</b></p>
+    <!-- {{ grid(post.artist.sample()) }} -->
+  </div>
+</div>
+
+<!-- <div class="post col s11">
+      <div class="card">
+        <div class="card-image">
+          <img src="{{post.image_path}}">
+        </div>
+        <div class="card-content">
+          <p><i>{{post.caption}}</i> by <a href="/profile/{{post.artist.username}}">{{post.artist.name}}</a></p>
+        </div>
+        <div class="card-action">
+          <a href="/listing/{{post.id}}">Purchase</a>
+        </div>
+      </div>
+    </div> -->
+
+<!-- <div class="post">
     <a href="/profile/{{post.artist.username}}"><h5>{{ post.artist.username }}</h5></a>
     <a href="/listing/{{post.id}}"><img src="{{ post.image_path }}"></a>
     <p>Tags: {{ tags }}</p>
     <p>{{ post.caption }}</p>
-</div>
+</div> -->
 {%- endmacro %}

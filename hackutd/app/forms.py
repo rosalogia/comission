@@ -49,7 +49,7 @@ class RegistrationForm(FlaskForm):
 
 class EditProfileForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
-    bio = TextAreaField("About me", validators=[Length(min=0, max=140)])
+    bio = TextAreaField("About me", validators=[Length(min=0, max=140)], render_kw={"class":"materialize-textarea"})
     name = StringField("Display Name", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
@@ -60,7 +60,7 @@ class EditProfileForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    image = FileField("Upload Image", validators=[DataRequired()])
+    image = FileField("Upload Image", validators=[DataRequired()], render_kw={'onchange': 'getName(event)'})
 
     def validate_image(self, image):
         if image.data.filename.endswith(".jpg") or image.data.filename.endswith(".png"):
@@ -68,9 +68,9 @@ class PostForm(FlaskForm):
         else:
             raise ValidationError("Expected image file in jpg or png format")
 
-    caption = TextAreaField("A Descriptive Caption", validators=[DataRequired()])
-    tags = StringField("A comma separated list of tags describing your work")
-    price = DecimalField("Price", validators=[NumberRange(min=0)])
+    caption = TextAreaField("A Descriptive Caption", validators=[DataRequired()], render_kw={"class":"materialize-textarea"})
+    tags = StringField("A comma separated list of tags describing your work", render_kw={"class":"validate"})
+    price = DecimalField("Price", validators=[NumberRange(min=0)], render_kw={"class":"validate"})
     submit = SubmitField("Create")
 
 

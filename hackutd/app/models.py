@@ -24,6 +24,13 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    def sample(self):
+        if self.posts:
+            post_cols = [[], [], []]
+            for i in range(len(self.posts[:9])):
+                post_cols[i % 3].append(self.posts[i])
+        return post_cols
 
 
 @login.user_loader

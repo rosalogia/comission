@@ -1,61 +1,88 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <span class="purchase-el"><img src="{{ post.image_path }}" width="50%">
-    <p>Total: ${{ post.price }}<br> Description: {{ post.caption }} 
-      {% if current_user.is_authenticated %}
-        {% if not liked %}
-        <a href="/like/{{ post.id }}"><p>Like</p></a>
-        {% else %}
-        <a href="/unlike/{{ post.id }}"><p>Unlike</p></a>
-        {% endif %}
-      {% endif %}
-    </p></span>
-    <span class="purchase-el paypal-buttons"> {% if current_user.is_authenticated %}
-        <script src="https://www.paypal.com/sdk/js?client-id=AZeTkSjA5DT9ktmmIP_xFe8sXdvT47yKc9a-McpRgY2ismJvOclBlshdbVqGt0D1J0Ctqs20SelPvR6d&currency=USD"></script>
-        <div id="paypal-button-container" ></div>
-    <script>
-      paypal.Buttons({
-        // Sets up the transaction when a payment button is clicked
-        createOrder: (data, actions) => {
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: "{{ post.price }}" // Can also reference a variable or function
-              },
-              payee: {
-                email_address: "{{ artist.email.data }}"
-              }
-            }]
-          });
-        },
-        // Finalize the transaction after payer approval
-        onApprove: (data, actions) => {
-          return actions.order.capture().then(function(orderData) {
-            // Successful capture! For dev/demo purposes:
-            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-            const transaction = orderData.purchase_units[0].payments.captures[0];
-            alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
-            actions.redirect('success.html');
-            // When ready to go live, remove the alert and show a success message within this page. For example:
-            // const element = document.getElementById('paypal-button-container');
-            // element.innerHTML = '<h3>Thank you for your payment!</h3>';
-            // Or go to another URL:  actions.redirect('thank_you.html');
-          });
-        }
-      }).render('#paypal-button-container');
-    </script>
-        {% else %}
-            <p>You need to be <a href="/login/" target="blank"><strong>logged in</strong></a> to purchase.</p>
-        {% endif %}
+<div class="row">
+  <div class="col s12 offset-s3">
+    <span class="purchase-el">
+      <div class="row">
+        <div class="col s12 m6">
+          <div class="card">
+            <div class="card-image">
+              <img src="{{post.image_path}}">
+              <span class="card-title">{{post.caption}}</span>
+              {% if current_user.is_authenticated %}
+              {% if not liked %}
+              <a href="/like/{{post.id}}" class="btn-floating halfway-fab waves-effect waves-light like"><i
+                  class="material-icons">favorite_border</i></a>
+              </a>
+              {% else %}
+              <a href="/unlike/{{post.id}}" class="btn-floating halfway-fab waves-effect waves-light like"><i
+                  class="material-icons">favorite</i></a>
+              </a>
+              {% endif %}
+              {% endif %}
+            </div>
+            <div class="card-content">
+              <p> {{ "$%.2f"|format(post.price) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <img src="{{ post.image_path }}" width="50%">
+      <p>Total: ${{ post.price }}<br> Description: {{ post.caption }} -->
+      </p>
     </span>
+  </div>
+  <div class="col s6 offset-s3">
+    <span class="purchase-el paypal-buttons"> {% if current_user.is_authenticated %}
+      <script
+        src="https://www.paypal.com/sdk/js?client-id=AZeTkSjA5DT9ktmmIP_xFe8sXdvT47yKc9a-McpRgY2ismJvOclBlshdbVqGt0D1J0Ctqs20SelPvR6d&currency=USD"></script>
+      <div id="paypal-button-container"></div>
+  </div>
+</div>
+<script>
+  paypal.Buttons({
+    // Sets up the transaction when a payment button is clicked
+    createOrder: (data, actions) => {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: "{{ post.price }}" // Can also reference a variable or function
+          },
+          payee: {
+            email_address: "{{ artist.email.data }}"
+          }
+        }]
+      });
+    },
+    // Finalize the transaction after payer approval
+    onApprove: (data, actions) => {
+      return actions.order.capture().then(function (orderData) {
+        // Successful capture! For dev/demo purposes:
+        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+        const transaction = orderData.purchase_units[0].payments.captures[0];
+        alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+        actions.redirect('success.html');
+        // When ready to go live, remove the alert and show a success message within this page. For example:
+        // const element = document.getElementById('paypal-button-container');
+        // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+        // Or go to another URL:  actions.redirect('thank_you.html');
+      });
+    }
+  }).render('#paypal-button-container');
+</script>
+{% else %}
+<p>You need to be <a href="/login/" target="blank"><strong>logged in</strong></a> to purchase.</p>
+{% endif %}
+</span>
 {% endblock %}
 
 <style>
-    .purchase-el{
-        display: inline-block
-    }
-    .paypal-button{
-        width: 750px
-    }
+  .purchase-el {
+    display: inline-block
+  }
+
+  .paypal-button {
+    width: 750px
+  }
 </style>

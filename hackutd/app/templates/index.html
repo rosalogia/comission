@@ -6,11 +6,11 @@
 {% endblock %}
 
 {% block app_content %}
-<h1>Feed</h1>
-
 {% if not current_user.is_anonymous %}
+    <div class="row">
     {% for (post, tags) in posts %}
         {{macros.single(post, tags)}}
     {% endfor %}
+    </div>
 {% endif %}
 {% endblock %}

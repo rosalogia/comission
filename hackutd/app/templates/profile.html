@@ -19,6 +19,8 @@
    {{ macros.grid(posts) }}
    
    {% if current_user.is_authenticated and current_user.id == user.id %}
+   <h5>Your Likes</h5>
+   <hr>
 
    {{ macros.grid(likes) }}
 

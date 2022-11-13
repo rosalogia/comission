@@ -1,0 +1,112 @@
+.nav-wrapper {
+    background-color: #4A5759;
+}
+
+nav .brand-logo {
+    color: #EDAFB8;
+}
+
+.nav-wrapper ul.left a {
+    font-size: 24px;
+    color: #EDAFB8;
+}
+
+.nav-wrapper ul.right a {
+    color: #EDAFB8;
+    font-size: 30px !important;
+}
+
+.mycon {
+    font-size: 30px !important;
+}
+
+body {
+    background-color: #F7E1D7;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.btn {
+    background-color: #B0C4B1;
+}
+
+.btn:hover {
+    background-color: #4A5759;
+    cursor: grab;
+    cursor: hand;
+}
+
+
+/* label color */
+/* .input-field label {
+     color: #;
+   } */
+/* label focus color */
+.input-field input[type=text]:focus+label {
+    color: #B0C4B1;
+}
+
+textarea.materialize-textarea:focus:not([readonly])+label {
+    color: #4A5759;
+}
+
+textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #B0C4B1;
+    box-shadow: 0 1px 0 0 #B0C4B1;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #B0C4B1;
+    box-shadow: 0 1px 0 0 #B0C4B1;
+}
+
+/* invalid color */
+.input-field input[type=text]:focus:not([readonly]) {
+    border-bottom: 1px solid #B0C4B1;
+    box-shadow: 0 1px 0 0 #B0C4B1;
+}
+
+.input-field input[type=text]:focus:not([readonly])+label {
+    color: #4A5759;
+}
+
+.input-field input[type=number]:focus:not([readonly]) {
+    border-bottom: 1px solid #B0C4B1;
+    box-shadow: 0 1px 0 0 #B0C4B1;
+}
+
+.input-field input[type=number]:focus:not([readonly])+label {
+    color: #4A5759;
+}
+
+.form-header {
+    color: #4A5759;
+}
+
+.error {
+    background-color: #DEDBD2;
+    color: #4A5759;
+}
+
+.card {
+    background-color: #fcefe9;
+}
+
+.post {
+    margin-left: 80px;
+}
+
+.post-tagline {
+    font-size: large;
+}
+
+.like {
+    background-color: #EDAFB8;
+}
+
+.like:hover {
+    background-color: #B0C4B1;
+}

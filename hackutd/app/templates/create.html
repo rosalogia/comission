@@ -3,10 +3,59 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block app_content %}
-    <h1>Create Post</h1>
-    <div class="row">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
+<div class="row">
+    <h3 class="form-header col s6 offset-s3">Create Post</h3>
+    <form method="POST" enctype="multipart/form-data" action="/create" class="col s6 offset-s3">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="file-field input-field col s2">
+                <label class="btn waves-effect waves-light" for="image"><a href="#">{{form.image.label}}</a></label>
+                <!-- <input id="image" type="file" onchange="getName(event)"></div> -->
+                {{form.image()}}
+            </div>
+            <div class="input-field col s10">
+                <input disabled id="file_name" type="text" class="validate">
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <!-- <textarea id="caption" class="materialize-textarea"></textarea> -->
+                {{form.caption()}}
+                <label for="caption">Caption</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+                <!-- <input id="tags" type="text" class="validate"> -->
+                {{form.tags()}}
+                <label for="tags">Tags</label>
+            </div>
+            <div class="input-field col s6">
+                <!-- <input id="price" type="text" class="validate"> -->
+                {{form.price()}}
+                <label for="price">Price</label>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </form>
+    <!-- <div class="col-md-4"> -->
+    <!-- {{ wtf.quick_form(form) }} -->
+    <script>
+        function getName(evt) {
+            var files = evt.target.files;
+            var file = files[0];
+            var field = document.getElementById('file_name');
+            field.value = file.name;
+        }
+
+        document.getElementById('caption').value = 'New Text';
+        M.textareaAutoResize(document.getElementById('caption'));
+    </script>
+
+</div>
+</div>
 {% endblock %}

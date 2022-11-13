@@ -55,18 +55,18 @@ def unfollow(user_id):
 def explore():
     form = SearchForm()
     if form.validate_on_submit():
-        posts = []
+        posts = set()
         (tags, artist, max_price) = (
             form.search_tag.data.split(", "),
             form.search_artist.data,
             form.search_price.data if form.search_price.data > 0 else None,
         )
         if tags:
-            posts = [t.post for t in Tag.query.filter(Tag.tag.in_(tags)).all()]
+            posts = set([t.post for t in Tag.query.filter(Tag.tag.in_(tags)).all()])
 
         if artist:
             if posts:
-                posts = [post for post in posts if post.artist.username == artist]
+                posts = set([post for post in posts if post.artist.username == artist])
             else:
                 user = User.query.filter_by(username=artist).first()
                 if user:
@@ -76,7 +76,7 @@ def explore():
 
         if max_price:
             if posts:
-                posts = [post for post in posts if post.price < max_price]
+                posts = set([post for post in posts if post.price < max_price])
             else:
                 posts = Post.query.filter(Post.price < max_price).all()
 
@@ -88,6 +88,7 @@ def explore():
 
         if not posts:
             flash("No matching pictures found")
+        posts = list(posts)
         post_cols = [[], [], []]
         for i in range(len(posts)):
             post_cols[i % 3].append(posts[i])
