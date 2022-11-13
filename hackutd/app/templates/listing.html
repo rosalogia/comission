@@ -2,8 +2,16 @@
 
 {% block app_content %}
     <span class="purchase-el"><img src="{{ post.image_path }}" width="50%">
-    <p>Total: ${{ post.price }}<br> Description: {{ post.caption }} </p></span>
-    <span class="purchase-el paypal-buttons"> {% if not current_user.is_anonymous %}
+    <p>Total: ${{ post.price }}<br> Description: {{ post.caption }} 
+      {% if current_user.is_authenticated %}
+        {% if not liked %}
+        <a href="/like/{{ post.id }}"><p>Like</p></a>
+        {% else %}
+        <a href="/unlike/{{ post.id }}"><p>Unlike</p></a>
+        {% endif %}
+      {% endif %}
+    </p></span>
+    <span class="purchase-el paypal-buttons"> {% if current_user.is_authenticated %}
         <script src="https://www.paypal.com/sdk/js?client-id=AZeTkSjA5DT9ktmmIP_xFe8sXdvT47yKc9a-McpRgY2ismJvOclBlshdbVqGt0D1J0Ctqs20SelPvR6d&currency=USD"></script>
         <div id="paypal-button-container" ></div>
     <script>

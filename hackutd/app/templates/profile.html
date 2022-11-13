@@ -17,4 +17,11 @@
    {% endif %}
    <hr>
    {{ macros.grid(posts) }}
+   
+   {% if current_user.is_authenticated and current_user.id == user.id %}
+
+   {{ macros.grid(likes) }}
+
+   {% endif %}
+
 {% endblock %}

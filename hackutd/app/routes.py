@@ -146,12 +146,18 @@ def profile(username):
     if current_user.is_authenticated:
         if current_user.username == username:
             posts = current_user.posts
-            columns = [[], [], []]
+            p_columns = [[], [], []]
             for i in range(len(posts)):
-                columns[i % 3].append(posts[i])
-
+                p_columns[i % 3].append(posts[i])
+            likes = current_user.likes
+            print(likes)
+            l_columns = [[], [], []]
+            liked_posts = []
+            for i in range(len(likes)):
+                liked_posts.append(Post.query.filter_by(id=(likes[i].post_id)).first())
+                l_columns[i % 3].append(liked_posts[i])
             return render_template(
-                "profile.html", user=current_user, posts=columns, title="Profile"
+                "profile.html", user=current_user, posts=p_columns, title="Profile", likes=l_columns
             )
         else:
             following = False
@@ -240,13 +246,33 @@ def user(username):
     posts = User.query.filter_by(username=username).first().posts
     return render_template("artistpage.html", user=user, posts=posts)
 
-
-@app.route("/listing/<post_id>")
+@app.route("/listing/<int:post_id>")
 def listing(post_id):
     post = Post.query.filter_by(id=post_id).first_or_404()
     artist = User.query.filter_by(id=post.artist_id).first()
-    return render_template("listing.html", post=post, artist=artist)
+    like = Likes.query.filter_by(user_id=current_user.id, post_id=post_id).first()
+    if like:
+        liked = True
+    else:
+        liked = False
+    return render_template("listing.html", post=post, artist=artist, liked=liked)
 
+@app.route("/like/<int:post_id>")
+@login_required
+def like(post_id):
+    like = Likes(user_id=current_user.id, post_id=post_id)
+    db.session.add(like)
+    db.session.commit()
+    return redirect(f'/listing/{post_id}')
+
+@app.route("/unlike/<int:post_id>")
+@login_required
+def unlike(post_id):
+    l = Likes.query.filter_by(user_id=current_user.id, post_id=post_id).first()
+    if l:
+        db.session.delete(l)
+        db.session.commit()
+    return redirect(f"/listing/{post_id}")
 
 @app.route("/success")
 def success():
