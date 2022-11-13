@@ -7,6 +7,8 @@ from werkzeug.urls import url_parse
 import os
 import datetime
 import hashlib
+import requests
+from requests.auth import HTTPBasicAuth
 
 
 @app.route("/")
@@ -225,7 +227,22 @@ def create():
         new_filename = f"{hasher.hexdigest()}.{file_extension}"
         path = os.path.join(app.static_folder, "img", new_filename)
         img.save(path)
-        tags = [Tag(tag=s.strip()) for s in form.tags.data.split(",")]
+
+        IMAGGA_KEY = os.environ.get("IMAGGA_KEY")
+        IMAGGA_SECRET = os.environ.get("IMAGGA_SECRET")
+        response = requests.post(
+            'https://api.imagga.com/v2/tags',
+            auth=(IMAGGA_KEY, IMAGGA_SECRET),
+            files={'image': open(path, 'rb')})
+        extra_tags = []
+        if response.status_code == 200:
+            results = sorted(response.json()["result"]["tags"], key=lambda x:x["confidence"], reverse=True)
+            extra_tags = [r["tag"]["en"] for r in results[:10]]
+            print(extra_tags)
+        
+        string_tags = [s.strip() for s in form.tags.data.split(",")]
+        string_tags += extra_tags
+        tags = [Tag(tag=s) for s in string_tags]
         new_post = Post(
             image_path=f"/static/img/{new_filename}",
             caption=form.caption.data,

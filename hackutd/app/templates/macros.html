@@ -28,7 +28,7 @@
   <div class="card-reveal">
     <span class="card-title grey-text text-darken-4">{{post.caption}}<i class="material-icons right">close</i></span>
     <p class="post-tagline">Purchase {{post.artist.name}}'s <a href="/listing/{{post.id}}"><i>{{post.caption}}</i></a>
-      for <b>{{ "$%.2f"|format(post.price) }}</b></p>
+      for <b>{{ "$%.2f"|format(post.price) }}</b><br><br>Tags: {{ tags }}</p>
     <!-- {{ grid(post.artist.sample()) }} -->
   </div>
 </div>
