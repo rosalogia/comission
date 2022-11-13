@@ -14,7 +14,7 @@ from wtforms.validators import (
     DataRequired,
     EqualTo,
     NumberRange,
-    Regexp,
+    Email,
 )
 from app.models import User
 
@@ -29,6 +29,7 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     name = StringField("Display Name", validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     is_artist = BooleanField("I'm an artist")
     password = PasswordField("Password", validators=[DataRequired()])
     password2 = PasswordField(

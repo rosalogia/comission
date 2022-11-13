@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <span class="purchase-el"><img src="{{ post.image_path }}" width="50%"></span>
+    <span class="purchase-el paypal-buttons"> {% if not current_user.is_anonymous %}
+        <script src="https://www.paypal.com/sdk/js?client-id=AZeTkSjA5DT9ktmmIP_xFe8sXdvT47yKc9a-McpRgY2ismJvOclBlshdbVqGt0D1J0Ctqs20SelPvR6d&currency=USD"></script>
+        <div id="paypal-button-container" ></div>
+    <script>
+      paypal.Buttons({
+        // Sets up the transaction when a payment button is clicked
+        createOrder: (data, actions) => {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: "{{ post.price }}" // Can also reference a variable or function
+              },
+              payee: {
+                email_address: "{{ artist.email.data }}"
+              }
+            }]
+          });
+        },
+        // Finalize the transaction after payer approval
+        onApprove: (data, actions) => {
+          return actions.order.capture().then(function(orderData) {
+            // Successful capture! For dev/demo purposes:
+            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+            const transaction = orderData.purchase_units[0].payments.captures[0];
+            alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+            actions.redirect('success.html');
+            // When ready to go live, remove the alert and show a success message within this page. For example:
+            // const element = document.getElementById('paypal-button-container');
+            // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+            // Or go to another URL:  actions.redirect('thank_you.html');
+          });
+        }
+      }).render('#paypal-button-container');
+    </script>
+        {% else %}
+            <p>You need to be <a href="/login/" target="blank"><strong>logged in</strong></a> to purchase.</p>
+        {% endif %}
+    </span>
+    <p>Total: ${{ post.price }} </p>
+{% endblock %}
+
+<style>
+    .purchase-el{
+        display: inline-block
+    }
+    .paypal-button{
+        width: 750px
+    }
+</style>

@@ -8,6 +8,7 @@ from flask_login import UserMixin
 class User(UserMixin, db.Model):
     id = Column(Integer, primary_key=True)
     username = Column(String, index=True, unique=True, nullable=False)
+    email = Column(String, unique=True, nullable=False)
     name = Column(String, nullable=False)
     bio = Column(String)
     password_hash = Column(String, nullable=False)

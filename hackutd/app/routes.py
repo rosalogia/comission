@@ -79,6 +79,7 @@ def register():
         user = User(
             username=form.username.data,
             name=form.name.data,
+            email=form.email.data,
             is_artist=form.is_artist.data,
         )
         user.set_password(form.password.data)
@@ -119,3 +120,14 @@ def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     posts = User.query.filter_by(username=username).first().posts
     return render_template('artistpage.html', user=user, posts=posts)
+
+@app.route("/listing/<post_id>")
+def listing(post_id):
+    post = Post.query.filter_by(id=post_id).first_or_404()
+    artist = User.query.filter_by(id=post.artist_id).first()
+    return render_template('listing.html', post=post, artist=artist)
+
+@app.route("/success")
+def success():
+    username = current_user.username
+    return render_template('success.html', username=username)
