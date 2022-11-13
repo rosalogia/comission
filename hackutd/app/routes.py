@@ -6,7 +6,7 @@ from app.models import *
 from werkzeug.urls import url_parse
 import os
 import datetime
-
+import hashlib
 
 @app.route("/")
 
@@ -76,11 +76,14 @@ def create():
     form = PostForm()
     if form.validate_on_submit():
         img = form.image.data
-        path = os.path.join(app.instance_path, "posts", img.filename)
+        file_extension = img.filename[-3:]
+        hasher = hashlib.sha256(f"{img.filename}{current_user.username}{datetime.datetime.now()}".encode("utf-8"))
+        new_filename = f"{hasher.hexdigest()}.{file_extension}"
+        path = os.path.join(app.static_folder, "img", new_filename)
         img.save(path)
         tags = [Tag(tag=s.strip()) for s in form.tags.data.split(",")]
         new_post = Post(
-            image_path=path,
+            image_path=f"/static/img/{new_filename}",
             caption=form.caption.data,
             posted_at=datetime.datetime.now(),
             price=form.price.data,
