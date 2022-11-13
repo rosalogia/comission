@@ -16,7 +16,7 @@ from wtforms.validators import (
     NumberRange,
     Regexp,
 )
-from models import User
+from app.models import User
 
 
 class LoginForm(FlaskForm):

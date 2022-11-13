@@ -46,10 +46,9 @@ def logout():
     return redirect(url_for("index"))
 
 @app.route("/profile/<username>")
-@login_required
 def profile(username):
     user = User.query.filter_by(username=username).first_or_404()
-    posts = User.query.filter_by(username=username).first().posts
+    posts = user.posts
     return render_template("profile.html", user=user, posts=posts, title="Profile")
 
 
@@ -97,8 +96,5 @@ def create():
 @app.route("/artistpage/<username>")
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
+    posts = User.query.filter_by(username=username).first().posts
     return render_template('artistpage.html', user=user, posts=posts)

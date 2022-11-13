@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-   <h1>Profile</h1>
    <h1>User: {{ user.username }}</h1>
+   {% if user.bio %}<h5>About Me: {{ user.bio }}</h5>{% endif %}
    <hr>
    {% for post in posts %}
-   <p>
-      {{ post.author.username }} says: <b>{{ post.body }}</b>
-   </p>
+      <img src="{{ post.image_path }}">
+      <img src="/static/img/yea.png">
    {% endfor %}
 {% endblock %}
