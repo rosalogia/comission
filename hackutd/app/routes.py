@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, PostForm
+from app.forms import LoginForm, RegistrationForm, PostForm, SearchForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import *
 from werkzeug.urls import url_parse
@@ -15,11 +15,25 @@ def index():
     print("hi")
     return render_template("index.html", title="Home")
 
-
-@app.route("/explore")
+@app.route("/explore", methods=['GET','POST'])
 def explore():
+    form = SearchForm()
+    post=""
+    if form.validate_on_submit():
+        tag_list = form.search_tag.data.split(", ")
+        posts = [t.post for t in Tag.query.filter(Tag.tag.in_(tag_list)).all() if t.post.artist.username == form.search_artist.data]
+            
+        if not posts:
+            flash("No matching pictures found")
+        post_cols = [[], [], []]
+        for i in range(len(posts)):
+            post_cols[i % 3].append(posts[i])
+        print(post_cols)
+        return render_template("explore.html", title="Explore", posts=post_cols, form=form)
+    else:
+        flash("Error")
+    return render_template("explore.html", title="Explore", posts=[], form=form)
 
-    return render_template("explore.html", title="Explore")
 
 
 @app.route("/login", methods=["GET", "POST"])

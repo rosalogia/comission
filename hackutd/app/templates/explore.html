@@ -1,5 +1,35 @@
 {% extends "base.html" %}
 
-{% block app_content %}
-<h1>Explore</h1>
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "macros.html" as macros %}
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/image_grid.css">
 {% endblock %}
+
+{% block content %}
+    <h1>Explore</h1>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+    {% with messages = get_flashed_messages()%}
+    {% if messages %}
+        <h1 style="color: red">{{messages[0]}}</h1>
+    {%else%}
+        {{macros.grid(posts)}}
+    
+    {% endif %}
+    {%endwith%}
+
+{% endblock %}
+
+
+<!--
+1. person types in artist and tag seperated by spaces and hits enter
+2. if person filled in -> then look up posts including person constraint
+3. if tag filled in -> look up posts with the tag
+4. look up items in db with query of tags and ppl with limit x
+5. return posts in an array use Hannah's code
+-->

@@ -54,3 +54,8 @@ class PostForm(FlaskForm):
     tags = StringField("A comma separated list of tags describing your work")
     price = FloatField("Price", validators=[NumberRange(min=0)])
     submit = SubmitField("Create")
+class SearchForm(FlaskForm):
+   search_tag = StringField("Search Tag")
+   search_artist = StringField("Search Artist")
+   search_price = FloatField("Price Range",validators=[NumberRange(min=0)])
+   submit = SubmitField('Search')
