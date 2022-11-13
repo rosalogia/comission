@@ -45,16 +45,12 @@ def logout():
     logout_user()
     return redirect(url_for("index"))
 
-
-@app.route("/profile")
+@app.route("/profile/<username>")
 @login_required
 def profile(username):
     user = User.query.filter_by(username=username).first_or_404()
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
-    return render_template("profile.html", user=user, title="Profile")
+    posts = User.query.filter_by(username=username).first().posts
+    return render_template("profile.html", user=user, posts=posts, title="Profile")
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -98,8 +94,7 @@ def create():
         return redirect(url_for("index"))
     return render_template("create.html", title="Create", form=form)
     
-# @app.route("/artistpage")
-@app.route("/profile")
+@app.route("/artistpage/<username>")
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     posts = [
